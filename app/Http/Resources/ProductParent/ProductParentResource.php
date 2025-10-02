@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\ProductParam;
+namespace App\Http\Resources\ProductParent;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ParamProductResource extends JsonResource
+class ProductParentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

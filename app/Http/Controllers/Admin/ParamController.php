@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Param\StoreRequest;
 use App\Http\Requests\Admin\Param\UpdateRequest;
+use App\Http\Resources\Param\ParamResource;
 use App\Models\Param;
+use App\Services\ParamService;
 use Illuminate\Http\Request;
 
 class ParamController extends Controller
@@ -15,7 +17,10 @@ class ParamController extends Controller
      */
     public function index()
     {
-        //
+        $params = Param::all();
+        $params = ParamResource::collection($params)->resolve();
+        return inertia('Admin/Param/Index', compact('params'));
+
     }
 
     /**
@@ -23,7 +28,7 @@ class ParamController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Admin/Param/Create');
     }
 
     /**
@@ -31,7 +36,9 @@ class ParamController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        //
+        $data = $request->validated();
+        $param = ParamService::store($data);
+        return ParamResource::make($param)->resolve();
     }
 
     /**
@@ -39,7 +46,8 @@ class ParamController extends Controller
      */
     public function show(Param $param)
     {
-        //
+        $param = ParamResource::make($param)->resolve();
+        return inertia('Admin/Param/Show', compact('param'));
     }
 
     /**
@@ -47,7 +55,8 @@ class ParamController extends Controller
      */
     public function edit(Param $param)
     {
-        //
+        $param = ParamResource::make($param)->resolve();
+        return inertia('Admin/Param/Edit', compact('param'));
     }
 
     /**
@@ -55,7 +64,9 @@ class ParamController extends Controller
      */
     public function update(UpdateRequest $request, Param $param)
     {
-        //
+        $data = $request->validated();
+        $param = ParamService::update($param, $data);
+        return ParamResource::make($param)->resolve();
     }
 
     /**
@@ -63,6 +74,9 @@ class ParamController extends Controller
      */
     public function destroy(Param $param)
     {
-        //
+        $param->delete();
+        return response()->json([
+            'message' => 'success'
+        ], Response::HTTP_OK);
     }
 }
