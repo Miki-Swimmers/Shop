@@ -8,19 +8,21 @@ use App\Http\Requests\Admin\Category\UpdateRequest;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
+    public function __construct(private CategoryService $service)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::all();
-        $categories = CategoryResource::collection($categories)->resolve();
+        $categories = CategoryResource::collection(Category::all())->resolve();
         return inertia('Admin/Category/Index', compact('categories'));
-
     }
 
     /**
@@ -28,7 +30,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Category/Create');
+        $categories = CategoryResource::collection(Category::all())->resolve();
+        return inertia('Admin/Category/Create', compact('categories'));
     }
 
     /**
@@ -36,9 +39,12 @@ class CategoryController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $data = $request->validated();
-        $category = CategoryService::store($data);
-        return CategoryResource::make($category)->resolve();
+        $category = $this->service->store($request->validated());
+
+        return response()->json(
+            CategoryResource::make($category)->resolve(),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
@@ -64,9 +70,12 @@ class CategoryController extends Controller
      */
     public function update(UpdateRequest $request, Category $category)
     {
-        $data = $request->validated();
-        $category = CategoryService::update($category, $data);
-        return CategoryResource::make($category)->resolve();
+        $category = $this->service->update($category, $request->validated());
+
+        return response()->json(
+            CategoryResource::make($category)->resolve(),
+            Response::HTTP_OK
+        );
     }
 
     /**
@@ -75,8 +84,9 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
+
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
         ], Response::HTTP_OK);
     }
 }

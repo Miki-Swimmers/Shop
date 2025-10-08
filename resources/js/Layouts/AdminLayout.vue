@@ -14,7 +14,7 @@
                 <Link :href="route('admin.params.index')" class="block p-4 text-white border-b border-gray-200">Характеристики</Link>
             </nav>
         </aside>
-        <article class="w-3/4 bg-gray-50">
+        <article class="w-3/4 bg-gray-50 p-4">
             <slot/>
         </article>
     </section>
