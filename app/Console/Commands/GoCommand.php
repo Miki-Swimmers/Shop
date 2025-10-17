@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\Param\ParamFilterTypeEnum;
 use App\Models\category;
 use Illuminate\Console\Command;
 
@@ -26,7 +27,6 @@ class GoCommand extends Command
      */
     public function handle()
     {
-        $category = Category::find(1);
-        dd(category::all()->except($category->id));
+        dd(ParamFilterTypeEnum::map());
     }
 }
