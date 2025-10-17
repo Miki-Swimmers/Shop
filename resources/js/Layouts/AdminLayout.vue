@@ -8,7 +8,7 @@
         <aside class="w-1/4 bg-gray-900 min-h-screen">
             <nav>
                 <Link :href="route('dashboard')" class="block p-4 text-white border-b border-gray-200">Даш борд</Link>
-                <Link :href="route('admin.product-parents.index')" class="block p-4 text-white border-b border-gray-200">Группа продуктов</Link>
+                <Link :href="route('admin.product-groups.index')" class="block p-4 text-white border-b border-gray-200">Группа продуктов</Link>
                 <Link :href="route('admin.products.index')" class="block p-4 text-white border-b border-gray-200">Продукты</Link>
                 <Link :href="route('admin.categories.index')" class="block p-4 text-white border-b border-gray-200">Категории</Link>
                 <Link :href="route('admin.params.index')" class="block p-4 text-white border-b border-gray-200">Характеристики</Link>
